@@ -1,11 +1,11 @@
 """ Модуль окна добавления трансакции пользовательского интерфейса программы"""
 from PySide6.QtWidgets import (QMainWindow, QLabel, QComboBox, QTableWidget, QAbstractItemView)
-from PySide6.QtWidgets import (QWidget, QVBoxLayout, QLineEdit, QPushButton, QInputDialog)
+from PySide6.QtWidgets import (QWidget, QVBoxLayout, QLineEdit, QPushButton, QInputDialog, QMessageBox)
 from bookkeeper.controller.crud_controller import CrudController
 from datetime import datetime
 from bookkeeper.models.entities import *
 
-
+from bookkeeper.models.entities import *
 
 
 
@@ -19,6 +19,16 @@ from pony.orm import *
 from bookkeeper.models.entities import Category
 from bookkeeper.models.entities import Budget
 from bookkeeper.models.entities import db
+
+def select_categories_from_db():
+    categories = [category.name for category in select(c for c in Category)]
+    return categories
+
+def delete_category_from_db(category_name):
+    category = select(c for c in Category if c.name == category_name)[:]
+    if category:
+        delete(c for c in Category if c.name == category_name)
+
 
 
 class AddWindow(QMainWindow):
@@ -141,6 +151,19 @@ class AddWindow(QMainWindow):
             new_category = Category(name=new_category_name)
 
 
+
+
+    @db_session
+    def on_delete_category_button_click(self):
+        categories = select_categories_from_db()
+        category, ok = QInputDialog.getItem(self, "Выберите категорию", "Категория:", categories, 0, False)
+
+        if ok:
+            reply = QMessageBox.question(self, 'Подтверждение удаления',
+                                         f"Вы уверены, что хотите удалить категорию {category}?",
+                                         QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+            if reply == QMessageBox.Yes:
+                delete_category_from_db(category)  # Замените на свой метод удаления категории из базы данных
 
 
     def load_data_from_db(self):
