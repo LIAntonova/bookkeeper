@@ -1,5 +1,6 @@
 from bookkeeper.models.entities import db
 import bookkeeper.controller.query_helper as qh
+from pony.orm import select, delete
 
 
 class CrudController:
@@ -41,5 +42,12 @@ class CrudController:
 
     def delete(self, entity):
         raise NotImplementedError(f'Удаление для сущности {entity} не реализовано!')
+
+    from pony.orm import select, delete
+
+    def delete_category_from_db(category_name):
+        category = select(c for c in Category if c.name == category_name)[:]
+        if category:
+            delete(c for c in Category if c.name == category_name)
 
 
