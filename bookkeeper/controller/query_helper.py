@@ -1,4 +1,4 @@
-from pony.orm import *
+"""Модуль создания запросов из базы данных"""
 from bookkeeper.models.entities import *
 import sqlite3
 

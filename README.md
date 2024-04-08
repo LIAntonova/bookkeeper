@@ -49,7 +49,7 @@ poetry install
 ```commandline
 poetry run pytest --cov
 poetry run mypy --strict bookkeeper
-poetry run pytest --cov
+poetry run pylint bookkeeper
 poetry run flake8 bookkeeper
 ```
 

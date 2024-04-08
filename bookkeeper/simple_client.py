@@ -2,7 +2,7 @@
 Простой тестовый скрипт для терминала
 """
 
-from bookkeeper.models.category import Category
+from bookkeeper.models.entities import Category
 from bookkeeper.models.expense import Expense
 from bookkeeper.repository.memory_repository import MemoryRepository
 from bookkeeper.utils import read_tree
